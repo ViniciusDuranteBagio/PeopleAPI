@@ -1,0 +1,2 @@
+# PeopleAPI
+Simples People API
