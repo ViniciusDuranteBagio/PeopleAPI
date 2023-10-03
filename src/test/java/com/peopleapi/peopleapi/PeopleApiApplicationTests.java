@@ -1,5 +1,6 @@
 package com.peopleapi.peopleapi;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,7 @@ class PeopleApiApplicationTests {
 	void testListAllPeopleController()
 	{
 		List<People> listAll = peopleController.listAll();
-		assertNull(listAll);
+		assertEquals(listAll, new ArrayList<>());
 	}
 
 }
