@@ -28,7 +28,7 @@
     - GET
         - /api/v1/address/{peopleId} -> show
    - Post
-     -  /api/v1/people/save -> Insert
+     -  /api/v1/address/save -> Insert
    ```JSON
         {
       "number": 160,
@@ -39,7 +39,7 @@
       }
     ```
       - PUT
-           -  /api/v1/people/update/{addressId}
+           -  /api/v1/address/update/{addressId}
 ```JSON
       {
       "number": 160,
