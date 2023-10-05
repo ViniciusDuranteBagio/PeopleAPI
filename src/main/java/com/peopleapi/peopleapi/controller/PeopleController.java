@@ -56,7 +56,4 @@ public class PeopleController {
         return peopleRepository.save(peopleDatabase);
     }
 
-    
-
-
 }

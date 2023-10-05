@@ -6,9 +6,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.peopleapi.peopleapi.controller.AddressController;
 import com.peopleapi.peopleapi.controller.PeopleController;
 import com.peopleapi.peopleapi.exception.people.PeopleNotFoundException;
+import com.peopleapi.peopleapi.model.Address;
 import com.peopleapi.peopleapi.model.People;
+import com.peopleapi.peopleapi.repository.AddressRepository;
 import com.peopleapi.peopleapi.repository.PeopleRepository;
 
 import lombok.SneakyThrows;
@@ -20,6 +23,13 @@ class PeopleApiApplicationTests {
 
 	@Autowired
 	private PeopleController peopleController;
+
+	@Autowired
+	private AddressRepository addressRepository;
+
+
+	@Autowired
+	private AddressController addressController ;
 
 	@Autowired	
 	private PeopleRepository peopleRepository;
@@ -61,7 +71,7 @@ class PeopleApiApplicationTests {
 	@Test()
 	void testShowExceptionMessage()
 	{
-		Long id = new Long(1); 
+		Long id = new Long(10000); 
 		PeopleNotFoundException exception = assertThrows(PeopleNotFoundException.class, () -> peopleController.show(id));
 		String expectedMessage = "People not found with ID " + id + "!";
 		assertEquals(expectedMessage, exception.getMessage());
@@ -116,4 +126,63 @@ class PeopleApiApplicationTests {
 		assertEquals(expectedMessage, exception.getMessage());
 	}
 
+	@Test
+    @SneakyThrows
+    void testUpdate() {
+		Date date  = new Date(1985, Calendar.NOVEMBER, 21);
+		String newName = "teste";
+        People people = new People();
+        people.setName("People");
+        people.setBirthdayDate(date);
+
+        People peopleInserted = peopleRepository.save(people);
+		peopleInserted.setName(newName);
+		People peopleUpdated = peopleController.update(people.getId(), peopleInserted);
+
+        assertEquals(newName, peopleUpdated.getName());
+    }
+
+
+	@Test()
+	@SneakyThrows
+	void testeFindAllFromPeopleShouldReturnException()
+	{
+		Long id = new Long(1); 
+		PeopleNotFoundException exception = assertThrows(PeopleNotFoundException.class, () -> addressController.showAddress(id));
+		String expectedMessage = "People not found with ID " + id + "!";
+		assertEquals(expectedMessage, exception.getMessage());
+	}
+
+
+	@Test
+    @SneakyThrows
+    void testUpdateAddress() {
+        Address address = new Address();
+        address.setCity("Test City");
+        address.setMain(true);
+        address.setNumber(1);
+        address.setPublicPlace("Center");
+        address.setZipCode(88870000);
+
+        Address addressDB = addressRepository.save(address);
+
+		String city = "Test City 2";
+		Integer number = 2;
+		String publicPlace = "Center 2";
+		Integer zipCode = 88870000;
+
+        addressDB.setCity(city);
+        addressDB.setMain(true);
+        addressDB.setNumber(number);
+        addressDB.setPublicPlace(publicPlace);
+        addressDB.setZipCode(zipCode);
+
+        Address newAddress = addressController.update(addressDB.getId(), addressDB);
+
+        assertEquals(city, newAddress.getCity());
+        assertTrue(newAddress.getMain());
+        assertEquals(number, newAddress.getNumber());
+        assertEquals(publicPlace, newAddress.getPublicPlace());
+        assertEquals(zipCode, newAddress.getZipCode());
+    }	
 }
