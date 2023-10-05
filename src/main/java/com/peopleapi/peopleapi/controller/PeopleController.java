@@ -47,9 +47,8 @@ public class PeopleController {
         return peopleRepository.save(people);
     }
 
-
     @PutMapping("/update/{id}")
-    public People update(@PathVariable Long id, @RequestBody People people) throws PeopleNotFoundException {
+    public People update(@PathVariable Long id, @RequestBody @Valid People people) throws PeopleNotFoundException {
         People peopleDatabase = peopleRepository.findById(id).orElseThrow(() -> new PeopleNotFoundException(id));
         peopleDatabase.setName(people.getName());
         peopleDatabase.setBirthdayDate(people.getBirthdayDate());

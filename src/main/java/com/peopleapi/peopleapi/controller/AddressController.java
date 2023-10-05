@@ -18,6 +18,8 @@ import com.peopleapi.peopleapi.model.People;
 import com.peopleapi.peopleapi.repository.AddressRepository;
 import com.peopleapi.peopleapi.repository.PeopleRepository;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/api/v1/address")
 public class AddressController {
@@ -36,18 +38,18 @@ public class AddressController {
     }
 
     @PutMapping("/{id}")
-    public Address update(@PathVariable Long id, @RequestBody Address address) throws AddressNotFoundException {
+    public Address update(@PathVariable Long id, @RequestBody @Valid Address address) throws AddressNotFoundException {
         Address addressDB = addressRepository.findById(id).orElseThrow(() -> new AddressNotFoundException(id));
-        addressDB.setNumber(addressDB.getNumber());
-        addressDB.setCity(addressDB.getCity());
-        addressDB.setZipCode(addressDB.getZipCode());
-        addressDB.setPublicPlace(addressDB.getPublicPlace());
-        addressDB.setMain(addressDB.getMain());
+        addressDB.setNumber(address.getNumber());
+        addressDB.setCity(address.getCity());
+        addressDB.setZipCode(address.getZipCode());
+        addressDB.setPublicPlace(address.getPublicPlace());
+        addressDB.setMain(address.getMain());
         return addressRepository.save(addressDB);
     }
 
     @PostMapping("/{peopleId}")
-    public List<Address> insertAddress(@PathVariable Long peopleId, @RequestBody Address address) throws PeopleNotFoundException {
+    public List<Address> insertAddress(@PathVariable Long peopleId, @RequestBody @Valid Address address) throws PeopleNotFoundException {
         People person = peopleRepository.findById(peopleId).orElseThrow(() -> new PeopleNotFoundException(peopleId));
         List<Address> addressToUpdate = person.getAddress();
         addressToUpdate.add(address);
