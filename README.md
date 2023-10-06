@@ -28,7 +28,7 @@
     - GET
         - /api/v1/address/{peopleId} -> show
    - Post
-     -  /api/v1/address/save -> Insert
+     -  /api/v1/address/{peopleId} -> Insert
    ```JSON
         {
       "number": 160,
