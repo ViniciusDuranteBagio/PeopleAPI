@@ -31,9 +31,9 @@ public class AddressController {
     private AddressRepository addressRepository;
 
     @GetMapping("/{peopleId}")
-    public List<Address> showAddress(@PathVariable Long personId) throws PeopleNotFoundException
+    public List<Address> showAddress(@PathVariable Long peopleId) throws PeopleNotFoundException
     {
-        People people = peopleRepository.findById(personId).orElseThrow(() -> new PeopleNotFoundException(personId));
+        People people = peopleRepository.findById(peopleId).orElseThrow(() -> new PeopleNotFoundException(peopleId));
         return people.getAddress();
     }
 
@@ -50,11 +50,11 @@ public class AddressController {
 
     @PostMapping("/{peopleId}")
     public List<Address> insertAddress(@PathVariable Long peopleId, @RequestBody @Valid Address address) throws PeopleNotFoundException {
-        People person = peopleRepository.findById(peopleId).orElseThrow(() -> new PeopleNotFoundException(peopleId));
-        List<Address> addressToUpdate = person.getAddress();
+        People people = peopleRepository.findById(peopleId).orElseThrow(() -> new PeopleNotFoundException(peopleId));
+        List<Address> addressToUpdate = people.getAddress();
         addressToUpdate.add(address);
-        person.setAddress(addressToUpdate);
-        peopleRepository.save(person);
+        people.setAddress(addressToUpdate);
+        peopleRepository.save(people);
         return addressToUpdate;
     }
 
